@@ -102,7 +102,7 @@
     /* 案例网格 */
     .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
     .grid .item{position:relative;border:1px solid var(--border);border-radius:14px;overflow:hidden;background:#0a0f22}
-    .grid .item img{height:200px;object-fit:cover}
+    .grid .item img{width:100%;aspect-ratio:16/9;height:auto;object-fit:cover;display:block}
     .grid .item .meta{padding:10px;font-weight:600}
     @media (max-width: 880px){.grid{grid-template-columns:1fr}}
 
@@ -228,20 +228,20 @@
   <!-- ====== 客户案例 ====== -->
   <section class="section" id="cases">
     <div class="container">
-      <h2 class="h2">部分客户案例</h2>
-      <p class="sub">点击相关图片，可查看相应的视频介绍</p>
+      <h2 class="h2">相关客户案例展示</h2>
+      <p class="sub">需要相关案例的详细内容和进一步分析请联系我们</p>
       <div class="grid">
         <article class="item">
-          <img src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1600&auto=format&fit=crop" alt="智慧园区孪生"/>
+          <img src="images/yuanqu.jpg?q=80&w=1600&auto=format&fit=crop" alt="智慧园区孪生"/>
           <div class="meta">智慧园区孪生 · 设备态势 + 能耗分析</div>
         </article>
         <article class="item">
-          <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1600&auto=format&fit=crop" alt="工业产线仿真"/>
+          <img src="images/gongchang.jpg?q=80&w=1600&auto=format&fit=crop" alt="工业产线仿真"/>
           <div class="meta">工业产线仿真 · 生产节拍优化</div>
         </article>
         <article class="item">
-          <img src="https://images.unsplash.com/photo-1603484477859-abe6a73f936a?q=80&w=1600&auto=format&fit=crop" alt="UE5 交互展陈"/>
-          <div class="meta">UE5 交互展陈 · 沉浸式体验</div>
+          <img src="images/shuili.png?q=80&w=1600&auto=format&fit=crop" alt="水利，水电站"/>
+          <div class="meta">UE5 水利，水电站</div>
         </article>
       </div>
     </div>
