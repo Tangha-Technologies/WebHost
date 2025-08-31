@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="数字孪生 · 游戏开发 · 三维可视化 · 实时渲染 — 企业官网模板（纯HTML单文件）" />
+  <title>某某科技 | 数字孪生 · 游戏开发</title>
+  <style>
+    :root{
+      --brand: #3b82f6; /* 主题主色 */
+      --brand-2:#22d3ee; /* 辅色 */
+      --bg:#0b1020;
+      --fg:#e7eefc;
+      --muted:#9fb2d6;
+      --card:#121830;
+      --border:#1d2542;
+      --ok:#16a34a;
+      --warn:#f59e0b;
+      --error:#ef4444;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;}
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+    .container{width:100%;max-width:1200px;margin:0 auto;padding:0 20px}
+    .section{padding:80px 0}
+    .btn{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,var(--brand),var(--brand-2));border:0;color:#fff;padding:12px 18px;border-radius:16px;font-weight:700;cursor:pointer;box-shadow:0 8px 24px rgba(59,130,246,.25)}
+    .btn.secondary{background:transparent;border:1px solid var(--border);box-shadow:none}
+
+    /* 顶部导航 */
+    header{position:sticky;top:0;z-index:50;background:rgba(11,16,32,.7);backdrop-filter:saturate(180%) blur(10px);border-bottom:1px solid var(--border)}
+    .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+    .brand{display:flex;align-items:center;gap:.75rem;font-weight:800}
+    .brand .logo{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--brand),var(--brand-2));box-shadow:0 4px 16px rgba(34,211,238,.35)}
+    .menu{display:flex;gap:1rem}
+    .menu a{padding:8px 10px;border-radius:10px;color:var(--muted)}
+    .menu a:hover{background:var(--card);color:var(--fg)}
+    .hamburger{display:none;cursor:pointer}
+    /* 修复：桌面端默认隐藏抽屉菜单，避免与顶部菜单重复显示 */
+    .drawer{display:none}
+    @media (max-width: 880px){
+      .menu{display:none}
+      .hamburger{display:block}
+      .drawer{position:fixed;inset:64px 0 auto auto;background:var(--card);border-top:1px solid var(--border);padding:12px;display:none}
+      .drawer.open{display:block}
+      .drawer a{display:block;padding:12px;border-radius:12px;color:var(--muted)}
+      .drawer a:hover{background:rgba(255,255,255,.04);color:var(--fg)}
+    }
+
+    /* 首屏 */
+    .hero{position:relative;isolation:isolate;background:
+      radial-gradient(80rem 40rem at 10% -10%, rgba(34,211,238,.25), transparent 60%),
+      radial-gradient(60rem 30rem at 90% -20%, rgba(59,130,246,.25), transparent 60%),
+      linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.0));
+      overflow:hidden
+    }
+    .hero-inner{display:grid;grid-template-columns:1.2fr .8fr;gap:32px;align-items:center;padding:80px 0}
+    .hero h1{font-size:clamp(28px,4vw,48px);line-height:1.1;margin:0 0 12px}
+    .hero p{color:var(--muted);margin:0 0 28px}
+    .hero .badges{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 28px}
+    .badge{border:1px solid var(--border);padding:6px 10px;border-radius:999px;font-size:12px;color:var(--muted)}
+    .hero-illus{position:relative;border:1px solid var(--border);background:linear-gradient(180deg,#0e1430,#0b1020);border-radius:24px;box-shadow:0 20px 60px rgba(0,0,0,.35);overflow:hidden}
+    .hero-illus .grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);background-size:24px 24px;mask-image:linear-gradient(to bottom, black 70%, transparent 100%)}
+    .hero-illus .orb{position:absolute;width:220px;height:220px;border-radius:50%;filter:blur(18px);opacity:.5}
+    .hero-illus .o1{left:-40px;top:-40px;background:radial-gradient(circle at 30% 30%, var(--brand), transparent 70%)}
+    .hero-illus .o2{right:-40px;bottom:-40px;background:radial-gradient(circle at 70% 70%, var(--brand-2), transparent 70%)}
+    @media (max-width: 880px){.hero-inner{grid-template-columns:1fr}.hero-illus{height:240px}}
+
+    /* 轮播 */
+    .carousel{position:relative;background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+    .slides{display:flex;transition:transform .6s ease;border-bottom:1px solid var(--border)}
+    .slide{min-width:100%;position:relative;height:420px;background:#070b18}
+    .slide img{width:100%;height:100%;object-fit:cover;opacity:.92}
+    .caption{position:absolute;left:20px;bottom:18px;background:rgba(2,6,23,.6);border:1px solid var(--border);color:#e6f0ff;padding:10px 12px;border-radius:12px;backdrop-filter:blur(8px);font-weight:600}
+    .ctrl{position:absolute;inset:auto 0 0 0;display:flex;align-items:center;justify-content:space-between;padding:10px}
+    .arrows{display:flex;gap:8px}
+    .arrow{border:1px solid var(--border);background:rgba(255,255,255,.04);width:40px;height:40px;border-radius:12px;display:grid;place-items:center;cursor:pointer}
+    .arrow:active{transform:scale(.98)}
+    .dots{display:flex;gap:6px;justify-content:center}
+    .dot{width:8px;height:8px;border-radius:999px;background:#45507a;opacity:.7}
+    .dot.active{background:linear-gradient(135deg,var(--brand),var(--brand-2));opacity:1;width:20px}
+    @media (max-width: 640px){.slide{height:260px}}
+    @media (prefers-reduced-motion: reduce){.slides{transition:none}}
+
+    /* 区块标题 */
+    .h2{font-size:28px;margin:0 0 14px}
+    .sub{color:var(--muted);margin:0 0 26px}
+
+    /* 服务卡片 */
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px}
+    .card h3{margin:10px 0 8px;font-size:18px}
+    .card p{margin:0;color:var(--muted)}
+    .card .icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--brand),var(--brand-2));display:grid;place-items:center;font-weight:900}
+    @media (max-width: 880px){.cards{grid-template-columns:1fr}}
+
+    /* 案例网格 */
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .grid .item{position:relative;border:1px solid var(--border);border-radius:14px;overflow:hidden;background:#0a0f22}
+    .grid .item img{height:200px;object-fit:cover}
+    .grid .item .meta{padding:10px;font-weight:600}
+    @media (max-width: 880px){.grid{grid-template-columns:1fr}}
+
+    /* 页脚 */
+    footer{border-top:1px solid var(--border);padding:28px 0;color:var(--muted)}
+    .inline-list{display:flex;gap:14px;flex-wrap:wrap}
+
+    /* 小提示标签 */
+    .hint{display:inline-block;border:1px dashed var(--border);color:var(--muted);padding:6px 8px;border-radius:10px;font-size:12px}
+  </style>
+</head>
+<body>
+  <!-- ====== 顶部导航 ====== -->
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#top">
+        <span class="logo" aria-hidden="true"></span>
+        <span>某某科技</span>
+      </a>
+      <nav class="menu" aria-label="主菜单">
+        <a href="#services">服务</a>
+        <a href="#carousel">产品宣传</a>
+        <a href="#cases">客户案例</a>
+        <a href="#about">关于我们</a>
+        <a href="#contact">联系</a>
+      </nav>
+      <div class="hamburger" id="hamburger" aria-label="展开菜单" aria-controls="drawer" aria-expanded="false">🍔</div>
+    </div>
+    <div class="drawer" id="drawer" role="dialog" aria-label="移动端菜单">
+      <a href="#services">服务</a>
+      <a href="#carousel">产品宣传</a>
+      <a href="#cases">客户案例</a>
+      <a href="#about">关于我们</a>
+      <a href="#contact">联系</a>
+    </div>
+  </header>
+
+  <!-- ====== 首屏 ====== -->
+  <section class="hero" id="top">
+    <div class="container hero-inner">
+      <div>
+        <div class="badges">
+          <span class="badge">数字孪生</span>
+          <span class="badge">游戏开发</span>
+          <span class="badge">实时渲染 · 三维可视化</span>
+        </div>
+        <h1>用三维重构现实，以交互释放价值</h1>
+        <p>我们为政企与品牌提供 <strong>数字孪生平台</strong>、<strong>虚拟仿真</strong>、<strong>游戏与交互应用</strong> 的端到端解决方案，覆盖咨询、设计、研发、交付与运维。</p>
+        <div class="inline-list" style="margin-top:8px;margin-bottom:18px">
+          <span class="hint">UE5 / WebGL / 云渲染</span>
+          <span class="hint">多人联机 · 高并发</span>
+          <span class="hint">三方系统集成</span>
+        </div>
+        <div class="inline-list">
+          <a class="btn" href="#contact">获得方案与报价 →</a>
+          <a class="btn secondary" href="#cases">查看案例</a>
+        </div>
+      </div>
+      <div class="hero-illus" aria-hidden="true">
+        <div class="grid"></div>
+        <div class="orb o1"></div>
+        <div class="orb o2"></div>
+        <img alt="三维城市可视化示意" src="https://images.unsplash.com/photo-1526476148966-98bd039463ea?q=80&w=1800&auto=format&fit=crop" style="position:absolute;inset:0;object-fit:cover;opacity:.18">
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== 滚动图片 · 产品宣传轮播 ====== -->
+  <section class="container" style="padding:60px 0">
+    <h2>产品宣传 · 滚动图片轮播</h2>
+    <p>用于展示数字孪生平台、游戏 DEMO、虚拟仿真与三维可视化成果。</p>
+    <div class="carousel">
+      <div class="slides" id="slides">
+        <div class="slide"><img src="https://picsum.photos/1200/420?random=1" alt="示例图1"><div class="caption">示例图1</div></div>
+        <div class="slide"><img src="https://picsum.photos/1200/420?random=2" alt="示例图2"><div class="caption">示例图2</div></div>
+        <div class="slide"><img src="https://picsum.photos/1200/420?random=3" alt="示例图3"><div class="caption">示例图3</div></div>
+        <div class="slide"><img src="https://picsum.photos/1200/420?random=4" alt="示例图4"><div class="caption">示例图4</div></div>
+      </div>
+      <div class="ctrl">
+        <button class="arrow" id="prev">⟵</button>
+        <button class="arrow" id="next">⟶</button>
+      </div>
+      <div class="dots" id="dots"></div>
+    </div>
+  </section>
+
+  <script>
+    const slides = document.getElementById('slides');
+    const slideEls = slides.children;
+    const dots = document.getElementById('dots');
+    let index = 0;
+    let timer;
+
+    function renderDots(){
+      dots.innerHTML='';
+      for(let i=0;i<slideEls.length;i++){
+        const d=document.createElement('div');
+        d.className='dot'+(i===0?' active':'');
+        d.addEventListener('click',()=>go(i,true));
+        dots.appendChild(d);
+      }
+    }
+
+    function update(){
+      slides.style.transform=`translateX(-${index*100}%)`;
+      dots.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===index));
+    }
+
+    function go(i,user){
+      index=(i+slideEls.length)%slideEls.length;
+      update();
+      if(user) restart();
+    }
+
+    function next(){go(index+1)}
+    function prev(){go(index-1,true)}
+
+    document.getElementById('next').onclick=()=>go(index+1,true);
+    document.getElementById('prev').onclick=()=>go(index-1,true);
+
+    function start(){timer=setInterval(next,4000)}
+    function stop(){clearInterval(timer)}
+    function restart(){stop();start()}
+
+    slides.addEventListener('mouseenter',stop);
+    slides.addEventListener('mouseleave',start);
+
+    renderDots();
+    update();
+    start();
+  </script>
+
+  <!-- ====== 服务 ====== -->
+  <section class="section" id="services">
+    <div class="container">
+      <h2 class="h2">核心服务</h2>
+      <p class="sub">覆盖规划咨询、三维资产制作、系统研发、联调交付与运维托管。</p>
+      <div class="cards">
+        <div class="card">
+          <div class="icon">DT</div>
+          <h3>数字孪生平台</h3>
+          <p>城市/园区/工厂级孪生构建，BIM/GIS/IoT 融合，态势监控、告警联动、仿真推演。</p>
+        </div>
+        <div class="card">
+          <div class="icon">UE</div>
+          <h3>游戏与交互应用</h3>
+          <p>UE5/Unity 多端开发，PC/移动/VR/大屏，支持多人联机、P2P/服务器架构。</p>
+        </div>
+        <div class="card">
+          <div class="icon">3D</div>
+          <h3>三维资产与可视化</h3>
+          <p>高精模型/Nanite、材质与灯光、实时渲染与 WebGL 大屏，性能优化与工具链。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== 客户案例 ====== -->
+  <section class="section" id="cases">
+    <div class="container">
+      <h2 class="h2">客户案例</h2>
+      <p class="sub">以下为示意，替换图片与文字即可上线上线。</p>
+      <div class="grid">
+        <article class="item">
+          <img src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1600&auto=format&fit=crop" alt="智慧园区孪生"/>
+          <div class="meta">智慧园区孪生 · 设备态势 + 能耗分析</div>
+        </article>
+        <article class="item">
+          <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1600&auto=format&fit=crop" alt="工业产线仿真"/>
+          <div class="meta">工业产线仿真 · 生产节拍优化</div>
+        </article>
+        <article class="item">
+          <img src="https://images.unsplash.com/photo-1603484477859-abe6a73f936a?q=80&w=1600&auto=format&fit=crop" alt="UE5 交互展陈"/>
+          <div class="meta">UE5 交互展陈 · 沉浸式体验</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== 关于&联系 ====== -->
+  <section class="section" id="about" style="padding-top:0">
+    <div class="container">
+      <h2 class="h2">关于我们</h2>
+      <p class="sub">我们是一支跨学科团队，长期深耕数字孪生、游戏与三维可视化相关技术栈，擅长复杂系统集成与高性能实时渲染。</p>
+      <div class="inline-list" style="margin:16px 0 0">
+        <span class="hint">提供源码与交付文档</span>
+        <span class="hint">支持私有化与本地化部署</span>
+        <span class="hint">签订保密与维保协议</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contact" style="padding-top:20px">
+    <div class="container">
+      <h2 class="h2">联系我们</h2>
+      <p class="sub">留下需求关键词（如“园区孪生”“展馆大屏”“VR 交互培训”“多人联机游戏 DEMO”），我们将在 1 个工作日内回复方案与排期。</p>
+      <div class="cards" style="grid-template-columns:2fr 1fr">
+        <form class="card" onsubmit="event.preventDefault(); alert('已提交，我们会尽快联系您。');">
+          <label>您的称呼<br><input required placeholder="张先生 / 李女士" style="width:100%;margin-top:6px;padding:12px;border-radius:12px;background:#0c132b;border:1px solid var(--border);color:var(--fg)"></label>
+          <div style="height:10px"></div>
+          <label>联系方式（邮箱/手机）<br><input required placeholder="you@example.com / 138****" style="width:100%;margin-top:6px;padding:12px;border-radius:12px;background:#0c132b;border:1px solid var(--border);color:var(--fg)"></label>
+          <div style="height:10px"></div>
+          <label>需求描述<br><textarea rows="5" placeholder="想要构建园区数字孪生大屏，包含能耗与告警联动..." style="width:100%;margin-top:6px;padding:12px;border-radius:12px;background:#0c132b;border:1px solid var(--border);color:var(--fg)"></textarea></label>
+          <div style="height:14px"></div>
+          <button class="btn" type="submit">提交需求</button>
+        </form>
+        <div class="card">
+          <h3>商务与支持</h3>
+          <p>邮箱：bd@example.com<br>电话：+86 010-8888 6666<br>地址：上海市 · 浦东新区（示例）</p>
+          <p class="sub">可提供上门需求沟通 / 远程会议评估 / POC 原型验证。</p>
+          <p class="hint">将上方信息替换为您的真实对接方式。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+      <div>© <span id="y"></span> 某某科技 · 数字孪生 / 游戏开发 · 保留所有权利</div>
+      <div class="inline-list">
+        <a href="#top">顶部 ↑</a>
+		<a href="#carousel">产品宣传</a>
+        <a href="#services">服务</a>
+        <a href="#cases">案例</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // 年份
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // 移动端菜单
+    const ham = document.getElementById('hamburger');
+    const drawer = document.getElementById('drawer');
+    ham.addEventListener('click', () => {
+      const open = drawer.classList.toggle('open');
+      ham.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+
+    // 简易轮播（自动 + 手动）
+    const slides = document.getElementById('slides');
+    const slideEls = Array.from(slides.children);
+    const dots = document.getElementById('dots');
+    const prev = document.getElementById('prev');
+    const next = document.getElementById('next');
+    let i = 0; // 当前索引
+    let timer = null;
+
+    // 创建dots
+    slideEls.forEach((_, idx) => {
+      const d = document.createElement('div');
+      d.className = 'dot' + (idx===0 ? ' active' : '');
+      d.dataset.idx = idx;
+      d.addEventListener('click', () => go(idx, true));
+      dots.appendChild(d);
+    });
+
+    function update(){
+      slides.style.transform = `translateX(-${i*100}%)`;
+      dots.querySelectorAll('.dot').forEach((el, idx)=>{
+        el.classList.toggle('active', idx===i);
+      });
+    }
+    function go(n, user){
+      i = (n + slideEls.length) % slideEls.length;
+      update();
+      if(user) restart();
+    }
+    function nextFn(){ go(i+1); }
+    function prevFn(){ go(i-1, true); }
+
+    next.addEventListener('click', ()=> go(i+1, true));
+    prev.addEventListener('click', ()=> go(i-1, true));
+
+    function start(){ timer = setInterval(nextFn, 4000); }
+    function stop(){ if(timer) clearInterval(timer); }
+    function restart(){ stop(); start(); }
+
+    // 悬停暂停
+    slides.addEventListener('mouseenter', stop);
+    slides.addEventListener('mouseleave', start);
+
+    // 可见性变化时暂停/继续
+    document.addEventListener('visibilitychange', ()=>{
+      if(document.hidden) stop(); else start();
+    });
+
+    // 触摸滑动（移动端）
+    let startX = 0, dx = 0, dragging=false;
+    slides.addEventListener('touchstart', (e)=>{ dragging=true; startX=e.touches[0].clientX; stop(); }, {passive:true});
+    slides.addEventListener('touchmove', (e)=>{ if(!dragging) return; dx=e.touches[0].clientX-startX; }, {passive:true});
+    slides.addEventListener('touchend', ()=>{
+      if(Math.abs(dx)>40){ if(dx<0) go(i+1,true); else go(i-1,true); }
+      dx=0; dragging=false; start();
+    });
+
+    // 初始
+    update();
+    start();
+  </script>
+</body>
+</html>
