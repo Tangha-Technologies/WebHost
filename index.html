@@ -112,6 +112,15 @@
 
     /* 小提示标签 */
     .hint{display:inline-block;border:1px dashed var(--border);color:var(--muted);padding:6px 8px;border-radius:10px;font-size:12px}
+  
+    /* 桌面端也把首屏改为单列，使插图显示在按钮下面 */
+    @media (min-width: 881px){
+      .hero-inner{grid-template-columns:1fr}
+      .hero-illus{height:360px}
+    }
+    /* 略微提升插图可见度 */
+    .hero-illus img{opacity:.35}
+
   </style>
 </head>
 <body>
@@ -129,7 +138,7 @@
         <a href="#about">关于我们</a>
         <a href="#contact">联系</a>
       </nav>
-      <div class="hamburger" id="hamburger" aria-label="展开菜单" aria-controls="drawer" aria-expanded="false" role="button" tabindex="0">&#9776;</div>
+      <div class="hamburger" id="hamburger" role="button" tabindex="0" aria-label="展开菜单" aria-controls="drawer" aria-expanded="false" role="button" tabindex="0">&#9776;</div>
     </div>
     <div class="drawer" id="drawer" role="dialog" aria-label="移动端菜单">
       <a href="#services">服务</a>
@@ -189,51 +198,7 @@
     </div>
   </section>
 
-  <script>
-    const slides = document.getElementById('slides');
-    const slideEls = slides.children;
-    const dots = document.getElementById('dots');
-    let index = 0;
-    let timer;
-
-    function renderDots(){
-      dots.innerHTML='';
-      for(let i=0;i<slideEls.length;i++){
-        const d=document.createElement('div');
-        d.className='dot'+(i===0?' active':'');
-        d.addEventListener('click',()=>go(i,true));
-        dots.appendChild(d);
-      }
-    }
-
-    function update(){
-      slides.style.transform=`translateX(-${index*100}%)`;
-      dots.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===index));
-    }
-
-    function go(i,user){
-      index=(i+slideEls.length)%slideEls.length;
-      update();
-      if(user) restart();
-    }
-
-    function next(){go(index+1)}
-    function prev(){go(index-1,true)}
-
-    document.getElementById('next').onclick=()=>go(index+1,true);
-    document.getElementById('prev').onclick=()=>go(index-1,true);
-
-    function start(){timer=setInterval(next,4000)}
-    function stop(){clearInterval(timer)}
-    function restart(){stop();start()}
-
-    slides.addEventListener('mouseenter',stop);
-    slides.addEventListener('mouseleave',start);
-
-    renderDots();
-    update();
-    start();
-  </script>
+  
 
   <!-- ====== 服务 ====== -->
   <section class="section" id="services">
@@ -339,14 +304,16 @@
 	</footer>
 
 
+  
   <script>
     // 年份
-    document.getElementById('y').textContent = new Date().getFullYear();
+    const yEl = document.getElementById('y'); if (yEl) yEl.textContent = new Date().getFullYear();
 
     // 移动端菜单
-    const ham = document.getElementById('hamburger');
-    const drawer = document.getElementById('drawer');
-    if (ham && drawer) {
+    (function() {
+      const ham = document.getElementById('hamburger');
+      const drawer = document.getElementById('drawer');
+      if (!ham || !drawer) return;
       const toggleDrawer = () => {
         const open = drawer.classList.toggle('open');
         ham.setAttribute('aria-expanded', open ? 'true' : 'false');
@@ -354,73 +321,65 @@
       ham.addEventListener('click', toggleDrawer);
       ham.addEventListener('touchstart', (e) => { e.preventDefault(); toggleDrawer(); }, {passive:false});
       ham.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          toggleDrawer();
-        }
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleDrawer(); }
       });
-    }
+    })();
 
     // 简易轮播（自动 + 手动）
-    const slides = document.getElementById('slides');
-    const slideEls = Array.from(slides.children);
-    const dots = document.getElementById('dots');
-    const prev = document.getElementById('prev');
-    const next = document.getElementById('next');
-    let i = 0; // 当前索引
-    let timer = null;
+    (function() {
+      const slides = document.getElementById('slides');
+      if (!slides) return;
+      const slideEls = Array.from(slides.children);
+      const dots = document.getElementById('dots');
+      const prev = document.getElementById('prev');
+      const next = document.getElementById('next');
+      let i = 0;
+      let timer = null;
 
-    // 创建dots
-    slideEls.forEach((_, idx) => {
-      const d = document.createElement('div');
-      d.className = 'dot' + (idx===0 ? ' active' : '');
-      d.dataset.idx = idx;
-      d.addEventListener('click', () => go(idx, true));
-      dots.appendChild(d);
-    });
-
-    function update(){
-      slides.style.transform = `translateX(-${i*100}%)`;
-      dots.querySelectorAll('.dot').forEach((el, idx)=>{
-        el.classList.toggle('active', idx===i);
+      // dots
+      dots.innerHTML = '';
+      slideEls.forEach((_, idx) => {
+        const d = document.createElement('div');
+        d.className = 'dot' + (idx===0 ? ' active' : '');
+        d.dataset.idx = idx;
+        d.addEventListener('click', () => go(idx, true));
+        dots.appendChild(d);
       });
-    }
-    function go(n, user){
-      i = (n + slideEls.length) % slideEls.length;
-      update();
-      if(user) restart();
-    }
-    function nextFn(){ go(i+1); }
-    function prevFn(){ go(i-1, true); }
 
-    if (next) next.addEventListener('click', ()=> go(i+1, true));
-    if (prev) prev.addEventListener('click', ()=> go(i-1, true));
+      function update() {
+        slides.style.transform = `translateX(-${i*100}%)`;
+        dots.querySelectorAll('.dot').forEach((el, idx)=> el.classList.toggle('active', idx===i));
+      }
+      function go(n, user) {
+        i = (n + slideEls.length) % slideEls.length;
+        update();
+        if (user) restart();
+      }
 
-    function start(){ timer = setInterval(nextFn, 4000); }
-    function stop(){ if(timer) clearInterval(timer); }
-    function restart(){ stop(); start(); }
+      function nextFn() { go(i+1); }
+      function prevFn() { go(i-1, true); }
 
-    // 悬停暂停
-    slides.addEventListener('mouseenter', stop);
-    slides.addEventListener('mouseleave', start);
+      if (next) next.addEventListener('click', ()=> go(i+1, true));
+      if (prev) prev.addEventListener('click', ()=> go(i-1, true));
 
-    // 可见性变化时暂停/继续
-    document.addEventListener('visibilitychange', ()=>{
-      if(document.hidden) stop(); else start();
-    });
+      function start() { timer = setInterval(nextFn, 4000); }
+      function stop() { if (timer) clearInterval(timer); }
+      function restart() { stop(); start(); }
 
-    // 触摸滑动（移动端）
-    let startX = 0, dx = 0, dragging=false;
-    slides.addEventListener('touchstart', (e)=>{ dragging=true; startX=e.touches[0].clientX; stop(); }, {passive:true});
-    slides.addEventListener('touchmove', (e)=>{ if(!dragging) return; dx=e.touches[0].clientX-startX; }, {passive:true});
-    slides.addEventListener('touchend', ()=>{
-      if(Math.abs(dx)>40){ if(dx<0) go(i+1,true); else go(i-1,true); }
-      dx=0; dragging=false; start();
-    });
+      slides.addEventListener('mouseenter', stop);
+      slides.addEventListener('mouseleave', start);
 
-    // 初始
-    update();
-    start();
+      document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); else start(); });
+
+      // 触摸滑动
+      let startX = 0, dx = 0, dragging = false;
+      slides.addEventListener('touchstart', (e) => { dragging = true; startX = e.touches[0].clientX; stop(); }, {passive:true});
+      slides.addEventListener('touchmove', (e) => { if (!dragging) return; dx = e.touches[0].clientX - startX; }, {passive:true});
+      slides.addEventListener('touchend', () => { if (Math.abs(dx) > 40) { if (dx < 0) go(i+1, true); else go(i-1, true); } dx = 0; dragging = false; start(); });
+
+      update(); start();
+    })();
   </script>
+
 </body>
 </html>
