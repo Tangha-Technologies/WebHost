@@ -46,7 +46,7 @@
     @media (max-width: 880px){
       .menu{display:none}
       .hamburger{display:block}
-      .drawer{position:fixed;inset:64px 0 auto auto;background:var(--card);border-top:1px solid var(--border);padding:12px;display:none}
+      .drawer{position:fixed;inset:64px 0 auto auto;background:var(--card);border-top:1px solid var(--border);padding:12px;display:none;z-index:60;min-width:220px;max-width:80vw}
       .drawer.open{display:block}
       .drawer a{display:block;padding:12px;border-radius:12px;color:var(--muted)}
       .drawer a:hover{background:rgba(255,255,255,.04);color:var(--fg)}
@@ -346,17 +346,20 @@
     // 移动端菜单
     const ham = document.getElementById('hamburger');
     const drawer = document.getElementById('drawer');
-    ham.addEventListener('click', () => {
-      const open = drawer.classList.toggle('open');
-      ham.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
-    ham.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
+    if (ham && drawer) {
+      const toggleDrawer = () => {
         const open = drawer.classList.toggle('open');
         ham.setAttribute('aria-expanded', open ? 'true' : 'false');
-      }
-    });
+      };
+      ham.addEventListener('click', toggleDrawer);
+      ham.addEventListener('touchstart', (e) => { e.preventDefault(); toggleDrawer(); }, {passive:false});
+      ham.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggleDrawer();
+        }
+      });
+    }
 
     // 简易轮播（自动 + 手动）
     const slides = document.getElementById('slides');
@@ -390,8 +393,8 @@
     function nextFn(){ go(i+1); }
     function prevFn(){ go(i-1, true); }
 
-    next.addEventListener('click', ()=> go(i+1, true));
-    prev.addEventListener('click', ()=> go(i-1, true));
+    if (next) next.addEventListener('click', ()=> go(i+1, true));
+    if (prev) prev.addEventListener('click', ()=> go(i-1, true));
 
     function start(){ timer = setInterval(nextFn, 4000); }
     function stop(){ if(timer) clearInterval(timer); }
