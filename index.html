@@ -428,23 +428,62 @@
     // 年份
     const yEl = document.getElementById('y'); if (yEl) yEl.textContent = new Date().getFullYear();
 
-    // 移动端菜单
-    (function() {
+    
+    // 移动端菜单（点击外部区域自动收起）
+    (function () {
       const ham = document.getElementById('hamburger');
       const drawer = document.getElementById('drawer');
       if (!ham || !drawer) return;
+
+      const closeDrawer = () => {
+        if (drawer.classList.contains('open')) {
+          drawer.classList.remove('open');
+          ham.setAttribute('aria-expanded', 'false');
+        }
+      };
       const toggleDrawer = () => {
         const open = drawer.classList.toggle('open');
         ham.setAttribute('aria-expanded', open ? 'true' : 'false');
       };
-      ham.addEventListener('click', toggleDrawer);
-      ham.addEventListener('touchstart', (e) => { e.preventDefault(); toggleDrawer(); }, {passive:false});
+
+      // 避免触摸与点击双触发：touch 触发后，短时间内忽略 click
+      let touched = false;
+      ham.addEventListener('touchstart', (e) => {
+        e.stopPropagation();
+        touched = true;
+        toggleDrawer();
+        setTimeout(() => (touched = false), 400);
+      }, { passive: true });
+
+      ham.addEventListener('click', (e) => {
+        if (touched) { e.stopPropagation(); return; }
+        e.stopPropagation();
+        toggleDrawer();
+      });
+
       ham.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleDrawer(); }
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggleDrawer();
+        }
+      });
+
+      // 点击抽屉内链接后关闭抽屉
+      drawer.addEventListener('click', (e) => {
+        const a = e.target.closest('a');
+        if (a) closeDrawer();
+        e.stopPropagation(); // 防止冒泡到 document 被二次处理
+      });
+
+      // 点击页面其他区域时关闭
+      document.addEventListener('click', (e) => {
+        if (!drawer.classList.contains('open')) return;
+        if (drawer.contains(e.target) || ham.contains(e.target)) return;
+        closeDrawer();
       });
     })();
 
-    // 简易轮播（自动 + 手动）
+// 简易轮播（自动 + 手动）
     (function() {
       const slides = document.getElementById('slides');
       if (!slides) return;
