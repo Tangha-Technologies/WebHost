@@ -3,9 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="数字孪生 · 游戏开发 · 三维可视化 · 实时渲染 · 大空间VR · 技术支持" />
-  <link rel="icon" href="/favicon-32.png" sizes="32x32">
-  <title>糖哈科技 | 数字孪生 · 游戏开发 · VR/AR · AI人工智能</title>
+  <meta name="description" content="数字孪生 · 游戏开发 · 三维可视化 · 实时渲染 — 企业官网模板（纯HTML单文件）" />
+  <title>糖哈科技 | 数字孪生 · 游戏开发</title>
   <style>
     :root{
       --brand: #3b82f6; /* 主题主色 */
@@ -138,6 +137,15 @@
 @media (max-width: 880px){
   .carousel .ctrl .arrow{ width:44px; height:44px; font-size:22px; border-radius:12px; }
 }
+
+  
+    /* 垂直居中轮播左右按钮：相对图片区域居中 */
+    .carousel .ctrl{
+      top:50%;
+      bottom:auto;
+      transform: translateY(-50%);
+      height:auto;
+    }
 
   </style>
 </head>
@@ -354,49 +362,9 @@
 
 
         <div class="card">
-          <h3>商务联系</h3>
-          <p>邮箱：guhong@tangha.com <br>QQ/微信：877188891 <br>地址：苏州工业园区凤里街272号4幢329室</p>
-		  <h3>技术支持</h3>
-          <p>可提供上门需求沟通 <br>远程会议评估 <br>POC 原型验证 <br>技术咨询，问题解决 <br>售后服务，长期维护</p>
-			<h3>关注我们</h3>
-			<div class="inline-list" style="margin-top:8px">
-			  <a href="https://space.bilibili.com/324162426" target="_blank" rel="noopener">
-				<!-- B站图标（小电视） -->
-				<svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-				  <path d="M8 6 L10 8 M16 6 L14 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-				  <rect x="3" y="7" width="18" height="12" rx="3" stroke="currentColor" stroke-width="2"/>
-				  <circle cx="9.5" cy="13" r="1" fill="currentColor"/>
-				  <circle cx="14.5" cy="13" r="1" fill="currentColor"/>
-				</svg>
-			  </a>
-			  <a href="https://www.fab.com/sellers/TangHa" target="_blank" rel="noopener">
-				<!-- FAB 字母图标 -->
-				<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-				  <rect x="2" y="3" width="20" height="18" rx="4" ry="4"
-						fill="none" stroke="currentColor" stroke-width="2"/>
-				  <text x="12" y="16" text-anchor="middle"
-						font-size="10" font-weight="700" fill="currentColor"
-						font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Arial">Fab</text>
-				</svg>
-			  </a>
-			  <a href="https://www.youtube.com/@Tangha-Technologies" target="_blank" rel="noopener">
-				<!-- YouTube 图标 -->
-				<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-				  <rect x="2" y="5" width="20" height="14" rx="3" ry="3"
-						fill="none" stroke="currentColor" stroke-width="2"/>
-				  <polygon points="10,9 16,12 10,15" fill="currentColor"/>
-				</svg>
-			  </a>
-			  <a href="https://store.steampowered.com/developer/WanWanHa" target="_blank" rel="noopener">
-				<!-- Steam 图标（通用样式） -->
-				<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-				  <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/>
-				  <line x1="10" y1="14" x2="15" y2="12.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-				  <circle cx="16.5" cy="11" r="2" fill="currentColor"/>
-				  <circle cx="9" cy="15" r="2.2" fill="none" stroke="currentColor" stroke-width="2"/>
-				</svg>
-			  </a>
-			</div>
+          <h3>商务与支持</h3>
+          <p>邮箱：guhong@tangha.com <br>QQ/微信：877188891 <br>地址：中国（江苏）自由贸易试验区苏州片区苏州工业园区凤里街272号4幢329室</p>
+          <p class="sub">可提供上门需求沟通 / 远程会议评估 / POC 原型验证。</p>
         </div>
       </div>
     </div>
@@ -405,7 +373,7 @@
 	<footer>
 	  <div class="container" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
 		<div>
-		  © <span id="y"></span> 糖哈科技（苏州）有限公司 · All Rights Reserved
+		  © <span id="y"></span> 糖哈科技 · 数字孪生 / 游戏开发 / 模拟仿真 · 保留所有权利 All Rights Reserved
 		  <br>
 		  <a href="https://beian.miit.gov.cn" target="_blank" rel="noopener noreferrer">苏ICP备2025173013号-1</a>
 		  &nbsp;|&nbsp;
@@ -428,62 +396,23 @@
     // 年份
     const yEl = document.getElementById('y'); if (yEl) yEl.textContent = new Date().getFullYear();
 
-    
-    // 移动端菜单（点击外部区域自动收起）
-    (function () {
+    // 移动端菜单
+    (function() {
       const ham = document.getElementById('hamburger');
       const drawer = document.getElementById('drawer');
       if (!ham || !drawer) return;
-
-      const closeDrawer = () => {
-        if (drawer.classList.contains('open')) {
-          drawer.classList.remove('open');
-          ham.setAttribute('aria-expanded', 'false');
-        }
-      };
       const toggleDrawer = () => {
         const open = drawer.classList.toggle('open');
         ham.setAttribute('aria-expanded', open ? 'true' : 'false');
       };
-
-      // 避免触摸与点击双触发：touch 触发后，短时间内忽略 click
-      let touched = false;
-      ham.addEventListener('touchstart', (e) => {
-        e.stopPropagation();
-        touched = true;
-        toggleDrawer();
-        setTimeout(() => (touched = false), 400);
-      }, { passive: true });
-
-      ham.addEventListener('click', (e) => {
-        if (touched) { e.stopPropagation(); return; }
-        e.stopPropagation();
-        toggleDrawer();
-      });
-
+      ham.addEventListener('click', toggleDrawer);
+      ham.addEventListener('touchstart', (e) => { e.preventDefault(); toggleDrawer(); }, {passive:false});
       ham.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          toggleDrawer();
-        }
-      });
-
-      // 点击抽屉内链接后关闭抽屉
-      drawer.addEventListener('click', (e) => {
-        const a = e.target.closest('a');
-        if (a) closeDrawer();
-        e.stopPropagation(); // 防止冒泡到 document 被二次处理
-      });
-
-      // 点击页面其他区域时关闭
-      document.addEventListener('click', (e) => {
-        if (!drawer.classList.contains('open')) return;
-        if (drawer.contains(e.target) || ham.contains(e.target)) return;
-        closeDrawer();
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleDrawer(); }
       });
     })();
 
-// 简易轮播（自动 + 手动）
+    // 简易轮播（自动 + 手动）
     (function() {
       const slides = document.getElementById('slides');
       if (!slides) return;
