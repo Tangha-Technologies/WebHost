@@ -75,7 +75,7 @@
     /* 轮播 */
     .carousel{position:relative;background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden}
     .slides{display:flex;transition:transform .6s ease;border-bottom:1px solid var(--border)}
-    .slide{min-width:100%;position:relative;height:546px;background:#070b18}
+    .slide{min-width:100%;position:relative;background:#070b18}
     .slide img{width:100%;height:100%;object-fit:cover;opacity:.92}
     .caption{position:absolute;left:20px;bottom:18px;background:rgba(2,6,23,.6);border:1px solid var(--border);color:#e6f0ff;padding:10px 12px;border-radius:12px;backdrop-filter:blur(8px);font-weight:600}
     .ctrl{position:absolute;left:0;right:0;top:50%;bottom:auto;transform:translateY(-50%);display:flex;align-items:center;justify-content:space-between;padding:0 8px;z-index:10}
@@ -172,17 +172,12 @@
     <div class="container hero-inner">
         <h1 style="white-space:nowrap;">用三维重构现实，以交互释放价值</h1>
 
-        <div class="inline-list">
-          <a class="btn" href="#contact">获得方案与报价 →</a>
-          <a class="btn secondary" href="#cases">查看案例</a>
-        </div>
+
     </div>
   </section>
     <!-- ====== 滚动图片 · 技术产品轮播 ====== -->
-  <section class="container" id="carousel" style="padding:60px 0">
+  <section class="container" id="carousel" >
 	<div class="container">
-      <h2 class="h2">技术产品</h2>
-      <p class="sub">多款自研独立技术专利，完整产品</p>
 		<div class="carousel-wide">
 		<div class="carousel">
 		  <div class="slides" id="slides">
@@ -198,8 +193,6 @@
 			<button class="arrow" id="next">⟶</button>
 		  </div>
 		  <div class="dots" id="dots"></div>
-		</div>
-	</div>
 	</div>
   </section>
   
@@ -556,20 +549,9 @@
 <style>
 /* === 技术产品：宽幅展示框（突破主栅格） === */
 section#carousel .carousel-wide{
-  width: min(1800px, 90vw);
+  width: min(1500px, 90vw);
   margin-left: 50%;
   transform: translateX(-50%);
-}
-section#carousel .carousel-wide .carousel{ width: 100%; }
-section#carousel .carousel .slides .slide{ height: 546px !important; } /* 高度 +30% */
-@media (max-width:1440px){
-  section#carousel .carousel-wide{ width: min(90vw, 1600px); }
-}
-@media (max-width:880px){
-  section#carousel .carousel .slides .slide{ height: 320px !important; }
-}
-@media (max-width:640px){
-  section#carousel .carousel .slides .slide{ height: 260px !important; }
 }
 </style>
 
