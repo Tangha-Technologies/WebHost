@@ -183,6 +183,7 @@
 	<div class="container">
       <h2 class="h2">技术产品</h2>
       <p class="sub">多款自研独立技术专利，完整产品</p>
+		<div class="carousel-wide">
 		<div class="carousel">
 		  <div class="slides" id="slides">
 			<div class="slide"><img src="https://wanwanha.com/tangha/service/aaa_game_dev.png" alt="3A游戏开发"><div class="caption">3A游戏开发</div></div>
@@ -198,6 +199,7 @@
 		  </div>
 		  <div class="dots" id="dots"></div>
 		</div>
+	</div>
 	</div>
   </section>
   
@@ -549,6 +551,27 @@
       update(); start();
     })();
   </script>
+
+
+<style>
+/* === 技术产品：宽幅展示框（突破主栅格） === */
+section#carousel .carousel-wide{
+  width: min(1800px, 90vw);
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+section#carousel .carousel-wide .carousel{ width: 100%; }
+section#carousel .carousel .slides .slide{ height: 546px !important; } /* 高度 +30% */
+@media (max-width:1440px){
+  section#carousel .carousel-wide{ width: min(90vw, 1600px); }
+}
+@media (max-width:880px){
+  section#carousel .carousel .slides .slide{ height: 320px !important; }
+}
+@media (max-width:640px){
+  section#carousel .carousel .slides .slide{ height: 260px !important; }
+}
+</style>
 
 </body>
 </html>
