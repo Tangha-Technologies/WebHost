@@ -543,6 +543,27 @@ section#carousel .carousel-wide{
   width: min(1500px, 90vw);
   margin-left: 50%;
   transform: translateX(-50%);
+  -webkit-mask-image: linear-gradient(
+    to right,
+    rgba(0,0,0,0.10) 0%,
+    rgba(0,0,0,1.00) 20%,
+    rgba(0,0,0,1.00) 80%,
+    rgba(0,0,0,0.10) 100%
+  );
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+
+  /* 标准语法（Firefox 等）*/
+  mask-image: linear-gradient(
+    to right,
+    rgba(0,0,0,0.10) 0%,
+    rgba(0,0,0,1.00) 20%,
+    rgba(0,0,0,1.00) 80%,
+    rgba(0,0,0,0.10) 100%
+  );
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+
 }
 </style>
 
