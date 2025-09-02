@@ -567,5 +567,25 @@ section#carousel .carousel-wide{
 }
 </style>
 
+
+<style>
+/* === 技术产品轮播按钮位置覆盖 === */
+/* 技术产品轮播按钮位置：底部居中对称 */
+#carousel .ctrl {
+  top: auto !important;
+  bottom: 10px !important;         /* 距底部 10px */
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%) !important; /* 居中对齐 */
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 50px !important;            /* 两按钮之间间距 50px */
+  width: auto !important;          /* 宽度自适应内容 */
+  z-index: 10;
+}
+
+</style>
+
 </body>
 </html>
